@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Your Email - SkillSync</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #000000;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ffffff;
+            text-decoration: none;
+            letter-spacing: -0.025em;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+            margin: 20px 0;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 32px;
+            text-align: center;
+        }
+        
+        .content {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 32px;
+            line-height: 1.7;
+        }
+        
+        .button {
+            display: inline-block;
+            background-color: #ffffff;
+            color: #000000;
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.2);
+            width: 100%;
+            display: block;
+        }
+        
+        .button:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(255, 255, 255, 0.3);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 8px;
+        }
+        
+        .footer-link {
+            color: #ffffff;
+            text-decoration: none;
+        }
+        
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+        
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            margin: 32px 0;
+        }
+        
+        .icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 24px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px 16px;
+            }
+            
+            .card {
+                padding: 24px;
+                border-radius: 12px;
+            }
+            
+            .title {
+                font-size: 20px;
+            }
+            
+            .button {
+                padding: 14px 24px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="{{ .SiteURL }}" class="logo">SkillSync</a>
+        </div>
+        
+        <div class="card">
+            <div class="icon">
+                ✉️
+            </div>
+            
+            <h1 class="title">Confirm Your Email Address</h1>
+            <p class="subtitle">Welcome to SkillSync! You're almost ready to start transforming your academic skills.</p>
+            
+            <div class="content">
+                <p>Hi there,</p>
+                <p>Thank you for signing up for SkillSync! To complete your registration and start analyzing your coursework, please confirm your email address by clicking the button below.</p>
+            </div>
+            
+            <a href="{{ .ConfirmationURL }}" class="button">
+                Confirm Email Address
+            </a>
+            
+            <div class="divider"></div>
+            
+            <div class="content">
+                <p style="font-size: 14px; color: rgba(255, 255, 255, 0.6);">
+                    If the button doesn't work, you can copy and paste this link into your browser:
+                </p>
+                <p style="font-size: 14px; color: rgba(255, 255, 255, 0.8); word-break: break-all; margin-top: 8px;">
+                    {{ .ConfirmationURL }}
+                </p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p class="footer-text">
+                This email was sent to {{ .Email }}
+            </p>
+            <p class="footer-text">
+                If you didn't create an account with SkillSync, you can safely ignore this email.
+            </p>
+            <p class="footer-text">
+                <a href="{{ .SiteURL }}" class="footer-link">Visit SkillSync</a> • 
+                <a href="{{ .SiteURL }}/support" class="footer-link">Support</a>
+            </p>
+            <div style="margin-top: 24px;">
+                <p class="footer-text" style="font-size: 12px;">
+                    SkillSync - Bridging the gap between academic learning and industry readiness.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
