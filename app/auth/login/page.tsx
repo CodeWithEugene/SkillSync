@@ -139,38 +139,7 @@ function LoginForm() {
             </Button>
           </form>
 
-          <div className="relative my-8">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-white/10" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-black px-4 text-white/50 font-medium">Or continue with</span>
-            </div>
-          </div>
 
-          <GoogleSignInButton
-            disabled={loading}
-            text="Sign in with Google"
-            onClick={async () => {
-              setError("")
-              setLoading(true)
-              try {
-                const { error } = await supabase.auth.signInWithOAuth({
-                  provider: 'google',
-                  options: {
-                    redirectTo: `${window.location.origin}/dashboard`,
-                  },
-                })
-                if (error) {
-                  setError(error.message || "Failed to sign in with Google")
-                  setLoading(false)
-                }
-              } catch (err: any) {
-                setError(err?.message || "Failed to sign in with Google")
-                setLoading(false)
-              }
-            }}
-          />
 
           <p className="text-center text-sm text-white/70 pt-4">
             Don't have an account?{" "}
