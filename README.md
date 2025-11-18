@@ -2,7 +2,7 @@
 
 Transform your academic coursework into industry-recognized skills with AI-powered analysis and career matching.
 
-## 🚀 Features
+## Features
 
 ### Core Functionality
 - **Smart Document Analysis**: Upload syllabi, assignments, and academic notes for AI-powered skill extraction
@@ -16,7 +16,7 @@ Transform your academic coursework into industry-recognized skills with AI-power
 - **Secure Authentication**: Multiple sign-in options including email, Google, and GitHub
 - **Real-time Updates**: Live feedback on document processing and skill verification
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 ### Frontend
 - **Framework**: Next.js 14 with App Router
@@ -36,7 +36,7 @@ Transform your academic coursework into industry-recognized skills with AI-power
 - **Career Matching**: Semantic similarity algorithms for job recommendations
 - **Data Validation**: Smart confidence scoring for extracted skills
 
-## 🎨 Design System
+## Design System
 
 ### Visual Identity
 - **Color Scheme**: Pure black (#000000) and white (#FFFFFF) for maximum contrast
@@ -50,7 +50,7 @@ Transform your academic coursework into industry-recognized skills with AI-power
 - **Navigation**: Collapsible mobile menu with smooth animations
 - **Touch Targets**: All interactive elements meet accessibility standards
 
-## 📱 Pages & Features
+## Pages & Features
 
 ### Public Pages
 - **Landing Page**: Hero section with feature highlights and call-to-action
@@ -64,7 +64,7 @@ Transform your academic coursework into industry-recognized skills with AI-power
 - **Portfolio**: Public-facing skills showcase with PDF export
 - **Profile**: Account settings and personal information management
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js 18 or higher
@@ -106,7 +106,7 @@ The application is optimized for deployment on Vercel:
    - Configure environment variables in Vercel dashboard
    - Deploy automatically on push to main branch
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 skillsync/
@@ -129,7 +129,7 @@ skillsync/
 └── types/                # TypeScript type definitions
 ```
 
-## 🔧 Development
+## Development
 
 ### Available Scripts
 - `npm run dev` - Start development server
@@ -148,30 +148,30 @@ skillsync/
 - **Caching**: Optimized caching strategies for static and dynamic content
 - **Bundle Analysis**: Regular bundle size monitoring
 
-## 🎯 Roadmap
+## Roadmap
 
-### Phase 1: Core Features ✅
+### Phase 1: Core Features
 - User authentication and profile management
 - Document upload and storage
 - Basic UI/UX with responsive design
 
-### Phase 2: AI Integration 🚧
+### Phase 2: AI Integration
 - Skill extraction from documents
 - Confidence scoring and validation
 - Career matching algorithms
 
-### Phase 3: Advanced Features 📋
+### Phase 3: Advanced Features
 - Portfolio PDF generation
 - Skills verification system
 - Advanced analytics and insights
 - Integration with job boards
 
-### Phase 4: Community Features 📋
+### Phase 4: Community Features
 - Skill sharing and collaboration
 - Peer verification system
 - Industry insights and trends
 
-## 🤝 Contributing
+## Contributing
 
 We welcome contributions! Please see our contributing guidelines for details on:
 - Code style and standards
@@ -179,11 +179,11 @@ We welcome contributions! Please see our contributing guidelines for details on:
 - Issue reporting
 - Feature requests
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Built with Next.js and the React ecosystem
 - UI components powered by shadcn/ui
