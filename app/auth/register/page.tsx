@@ -48,7 +48,14 @@ export default function RegisterPage() {
       })
 
       if (authError) {
-        setError(authError.message || "Registration failed. Please try again.")
+        console.error("Registration error details:", {
+          message: authError.message,
+          status: authError.status,
+          name: authError.name,
+          cause: authError.cause,
+          full: authError
+        })
+        setError(`Registration Error: ${authError.message}`)
         setLoading(false)
         return
       }

@@ -41,15 +41,16 @@ function LoginForm() {
       console.log("Login response:", { data, authError })
 
       if (authError) {
-        console.error("Auth error:", authError)
-        // Check for specific error types
-        if (authError.message.includes("Email not confirmed")) {
-          setError("Please confirm your email address before signing in. Check your inbox for a confirmation email.")
-        } else if (authError.message.includes("Invalid login credentials")) {
-          setError("Invalid email or password. Please check your credentials and try again.")
-        } else {
-          setError(authError.message || "Invalid email or password. Please try again.")
-        }
+        console.error("Auth error details:", {
+          message: authError.message,
+          status: authError.status,
+          name: authError.name,
+          cause: authError.cause,
+          full: authError
+        })
+        
+        // Show the exact error message for debugging
+        setError(`Authentication Error: ${authError.message}`)
         setLoading(false)
         return
       }
