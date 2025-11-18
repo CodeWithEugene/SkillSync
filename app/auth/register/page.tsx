@@ -43,19 +43,31 @@ export default function RegisterPage() {
           data: {
             name: formData.name,
           },
+          emailRedirectTo: `${window.location.origin}/dashboard`,
         },
       })
 
       if (authError) {
-        setError(authError.message || "Something went wrong")
+        setError(authError.message || "Registration failed. Please try again.")
+        setLoading(false)
         return
       }
 
       if (data.user) {
-        router.push("/auth/login?registered=true")
+        // Check if email confirmation is required
+        if (data.session) {
+          // User is automatically logged in
+          router.push("/dashboard")
+          router.refresh()
+        } else {
+          // Email confirmation required
+          setError("")
+          alert("Registration successful! Please check your email to confirm your account, then sign in.")
+          router.push("/auth/login")
+        }
       }
-    } catch (error) {
-      setError("Something went wrong")
+    } catch (error: any) {
+      setError(error?.message || "Something went wrong. Please try again.")
     } finally {
       setLoading(false)
     }
@@ -97,7 +109,11 @@ export default function RegisterPage() {
               onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
               required
             />
-            {error && <p className="text-sm text-red-500">{error}</p>}
+            {error && (
+              <div className="p-3 rounded-md bg-red-500/10 border border-red-500/20">
+                <p className="text-sm text-red-500">{error}</p>
+              </div>
+            )}
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Creating account..." : "Sign Up"}
             </Button>

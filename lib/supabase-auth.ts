@@ -1,5 +1,4 @@
 import { createServerSupabaseClient } from './supabase-server'
-import { prisma } from './db'
 
 /**
  * Get the current authenticated user from Supabase Auth
@@ -13,53 +12,15 @@ export async function getCurrentUser() {
     return null
   }
 
-  // Sync with Prisma User table
-  const dbUser = await prisma.user.findUnique({
-    where: { email: user.email! },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      image: true,
-      bio: true,
-      portfolioPublic: true,
-    }
-  })
-
-  // If user doesn't exist in Prisma, create it
-  if (!dbUser) {
-    const newUser = await prisma.user.create({
-      data: {
-        id: user.id,
-        email: user.email!,
-        name: user.user_metadata?.name || user.email?.split('@')[0] || null,
-        emailVerified: user.email_confirmed_at ? new Date(user.email_confirmed_at) : null,
-        image: user.user_metadata?.avatar_url || user.user_metadata?.picture || null,
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        image: true,
-        bio: true,
-        portfolioPublic: true,
-      }
-    })
-    return newUser
+  // Return user data from Supabase Auth
+  return {
+    id: user.id,
+    name: user.user_metadata?.name || user.email?.split('@')[0] || null,
+    email: user.email!,
+    image: user.user_metadata?.avatar_url || user.user_metadata?.picture || null,
+    bio: null,
+    portfolioPublic: false,
   }
-
-  // Update user if needed
-  if (dbUser.id !== user.id) {
-    await prisma.user.update({
-      where: { email: user.email! },
-      data: {
-        id: user.id,
-        emailVerified: user.email_confirmed_at ? new Date(user.email_confirmed_at) : null,
-      }
-    })
-  }
-
-  return dbUser
 }
 
 /**
@@ -73,4 +34,3 @@ export async function requireAuth() {
   }
   return user
 }
-
