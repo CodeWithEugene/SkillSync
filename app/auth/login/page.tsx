@@ -92,14 +92,18 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-3xl font-bold">SkillSync</CardTitle>
-          <CardDescription>Sign in to your account</CardDescription>
+    <div className="min-h-screen bg-black flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Background gradient orbs */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+      
+      <Card className="w-full max-w-md relative z-10">
+        <CardHeader className="space-y-3 text-center pb-8">
+          <CardTitle className="text-4xl font-bold text-white tracking-tight">SkillSync</CardTitle>
+          <CardDescription className="text-white/70 text-base">Sign in to your account</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <CardContent className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
               <Input
                 type="email"
@@ -119,13 +123,13 @@ function LoginForm() {
               />
             </div>
             {error && (
-              <div className="p-3 rounded-md bg-red-500/10 border border-red-500/20">
-                <p className="text-sm text-red-500">{error}</p>
+              <div className="p-4 rounded-xl bg-red-500/10 backdrop-blur-xl border border-red-500/20">
+                <p className="text-sm text-red-400">{error}</p>
               </div>
             )}
             {success && (
-              <div className="p-3 rounded-md bg-green-500/10 border border-green-500/20">
-                <p className="text-sm text-green-500">{success}</p>
+              <div className="p-4 rounded-xl bg-green-500/10 backdrop-blur-xl border border-green-500/20">
+                <p className="text-sm text-green-400">{success}</p>
               </div>
             )}
             <Button type="submit" className="w-full" disabled={loading}>
@@ -133,18 +137,18 @@ function LoginForm() {
             </Button>
           </form>
 
-          <div className="relative">
+          <div className="relative my-8">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-slate-700" />
+              <span className="w-full border-t border-white/10" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-slate-900 px-2 text-slate-400">Or continue with</span>
+              <span className="bg-black px-4 text-white/50 font-medium">Or continue with</span>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <Button
-              variant="outline"
+              variant="secondary"
               disabled={loading}
               onClick={async () => {
                 setError("")
@@ -169,7 +173,7 @@ function LoginForm() {
               Google
             </Button>
             <Button
-              variant="outline"
+              variant="secondary"
               disabled={loading}
               onClick={async () => {
                 setError("")
@@ -195,9 +199,9 @@ function LoginForm() {
             </Button>
           </div>
 
-          <p className="text-center text-sm text-slate-400">
+          <p className="text-center text-sm text-white/70 pt-4">
             Don't have an account?{" "}
-            <Link href="/auth/register" className="text-blue-400 hover:underline">
+            <Link href="/auth/register" className="text-white hover:underline font-semibold transition-all">
               Sign up
             </Link>
           </p>
@@ -210,8 +214,8 @@ function LoginForm() {
 export default function LoginPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-slate-400">Loading...</p>
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <p className="text-white">Loading...</p>
       </div>
     }>
       <LoginForm />

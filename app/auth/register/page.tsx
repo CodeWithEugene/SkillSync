@@ -74,14 +74,18 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1 text-center">
-          <CardTitle className="text-3xl font-bold">SkillSync</CardTitle>
-          <CardDescription>Create your account</CardDescription>
+    <div className="min-h-screen bg-black flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Background gradient orbs */}
+      <div className="absolute top-0 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+      
+      <Card className="w-full max-w-md relative z-10">
+        <CardHeader className="space-y-3 text-center pb-8">
+          <CardTitle className="text-4xl font-bold text-white tracking-tight">SkillSync</CardTitle>
+          <CardDescription className="text-white/70 text-base">Create your account</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <CardContent className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
             <Input
               placeholder="Full Name"
               value={formData.name}
@@ -110,8 +114,8 @@ export default function RegisterPage() {
               required
             />
             {error && (
-              <div className="p-3 rounded-md bg-red-500/10 border border-red-500/20">
-                <p className="text-sm text-red-500">{error}</p>
+              <div className="p-4 rounded-xl bg-red-500/10 backdrop-blur-xl border border-red-500/20">
+                <p className="text-sm text-red-400">{error}</p>
               </div>
             )}
             <Button type="submit" className="w-full" disabled={loading}>
@@ -119,9 +123,9 @@ export default function RegisterPage() {
             </Button>
           </form>
 
-          <p className="text-center text-sm text-slate-400">
+          <p className="text-center text-sm text-white/70 pt-4">
             Already have an account?{" "}
-            <Link href="/auth/login" className="text-blue-400 hover:underline">
+            <Link href="/auth/login" className="text-white hover:underline font-semibold transition-all">
               Sign in
             </Link>
           </p>
