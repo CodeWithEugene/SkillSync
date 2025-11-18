@@ -7,6 +7,7 @@ import { supabase } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { EnvCheck } from "@/components/debug/env-check"
 
 function LoginForm() {
   const router = useRouter()
@@ -219,6 +220,7 @@ export default function LoginPage() {
       </div>
     }>
       <LoginForm />
+      <EnvCheck />
     </Suspense>
   )
 }
