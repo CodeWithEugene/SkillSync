@@ -1,41 +1,58 @@
 import { NextResponse } from "next/server"
-import bcrypt from "bcrypt"
-import { prisma } from "@/lib/db"
+import { createServerSupabaseClient } from "@/lib/supabase"
 import { registerSchema } from "@/lib/validations"
 
+/**
+ * This route is kept for backward compatibility, but registration
+ * is now handled directly via Supabase Auth in the register page.
+ * Supabase Auth automatically creates users in auth.users table.
+ */
 export async function POST(req: Request) {
   try {
     const body = await req.json()
     const { name, email, password } = registerSchema.parse(body)
 
-    const existingUser = await prisma.user.findUnique({
-      where: { email }
+    const supabase = await createServerSupabaseClient()
+
+    // Create user via Supabase Auth
+    // Note: Supabase will return an error if user already exists
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          name,
+        },
+      },
     })
 
-    if (existingUser) {
+    if (error) {
+      // Check if error is due to existing user
+      if (error.message.includes('already registered') || error.message.includes('already exists')) {
+        return NextResponse.json(
+          { error: "User already exists" },
+          { status: 400 }
+        )
+      }
       return NextResponse.json(
-        { error: "User already exists" },
+        { error: error.message },
         { status: 400 }
       )
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10)
-
-    const user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-      }
-    })
-
     return NextResponse.json(
-      { user: { id: user.id, name: user.name, email: user.email } },
+      { 
+        user: { 
+          id: data.user?.id, 
+          name: data.user?.user_metadata?.name || name, 
+          email: data.user?.email 
+        } 
+      },
       { status: 201 }
     )
-  } catch (error) {
+  } catch (error: any) {
     return NextResponse.json(
-      { error: "Something went wrong" },
+      { error: error.message || "Something went wrong" },
       { status: 500 }
     )
   }

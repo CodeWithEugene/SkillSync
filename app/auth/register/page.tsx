@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { supabase } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -27,26 +28,32 @@ export default function RegisterPage() {
       return
     }
 
+    if (formData.password.length < 6) {
+      setError("Password must be at least 6 characters")
+      return
+    }
+
     setLoading(true)
 
     try {
-      const res = await fetch("/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-        }),
+      const { data, error: authError } = await supabase.auth.signUp({
+        email: formData.email,
+        password: formData.password,
+        options: {
+          data: {
+            name: formData.name,
+          },
+        },
       })
 
-      if (!res.ok) {
-        const data = await res.json()
-        setError(data.error || "Something went wrong")
+      if (authError) {
+        setError(authError.message || "Something went wrong")
         return
       }
 
-      router.push("/auth/login?registered=true")
+      if (data.user) {
+        router.push("/auth/login?registered=true")
+      }
     } catch (error) {
       setError("Something went wrong")
     } finally {

@@ -1,16 +1,16 @@
 import Link from "next/link"
-import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
-import { authOptions } from "@/lib/auth"
+import { getCurrentUser } from "@/lib/supabase-auth"
+import { LogoutButton } from "@/components/auth/logout-button"
 
 export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const session = await getServerSession(authOptions)
+  const user = await getCurrentUser()
 
-  if (!session) {
+  if (!user) {
     redirect("/auth/login")
   }
 
@@ -41,6 +41,7 @@ export default async function DashboardLayout({
               <Link href="/profile" className="hover:text-blue-400 transition">
                 Profile
               </Link>
+              <LogoutButton />
             </div>
           </div>
         </div>

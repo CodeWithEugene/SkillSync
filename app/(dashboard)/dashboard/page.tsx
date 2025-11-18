@@ -1,14 +1,13 @@
-import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
-import { authOptions } from "@/lib/auth"
+import { getCurrentUser } from "@/lib/supabase-auth"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
 export default async function DashboardPage() {
-  const session = await getServerSession(authOptions)
+  const user = await getCurrentUser()
 
-  if (!session) {
+  if (!user) {
     redirect("/auth/login")
   }
 
@@ -16,7 +15,7 @@ export default async function DashboardPage() {
     <div className="min-h-screen p-8">
       <div className="max-w-7xl mx-auto space-y-8">
         <div>
-          <h1 className="text-4xl font-bold">Welcome back, {session.user?.name}!</h1>
+          <h1 className="text-4xl font-bold">Welcome back, {user.name || user.email}!</h1>
           <p className="text-slate-400 mt-2">Here's your SkillSync overview</p>
         </div>
 

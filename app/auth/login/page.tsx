@@ -1,9 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { supabase } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -21,16 +21,16 @@ export default function LoginPage() {
     setLoading(true)
 
     try {
-      const result = await signIn("credentials", {
+      const { data, error: authError } = await supabase.auth.signInWithPassword({
         email,
         password,
-        redirect: false,
       })
 
-      if (result?.error) {
-        setError("Invalid email or password")
-      } else {
+      if (authError) {
+        setError(authError.message || "Invalid email or password")
+      } else if (data.user) {
         router.push("/dashboard")
+        router.refresh()
       }
     } catch (error) {
       setError("Something went wrong")
@@ -84,13 +84,33 @@ export default function LoginPage() {
           <div className="grid grid-cols-2 gap-4">
             <Button
               variant="outline"
-              onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
+              onClick={async () => {
+                const { error } = await supabase.auth.signInWithOAuth({
+                  provider: 'google',
+                  options: {
+                    redirectTo: `${window.location.origin}/dashboard`,
+                  },
+                })
+                if (error) {
+                  setError(error.message)
+                }
+              }}
             >
               Google
             </Button>
             <Button
               variant="outline"
-              onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
+              onClick={async () => {
+                const { error } = await supabase.auth.signInWithOAuth({
+                  provider: 'github',
+                  options: {
+                    redirectTo: `${window.location.origin}/dashboard`,
+                  },
+                })
+                if (error) {
+                  setError(error.message)
+                }
+              }}
             >
               GitHub
             </Button>

@@ -15,18 +15,18 @@ An AI-powered web application that analyzes academic coursework and maps them to
 
 - **Frontend**: Next.js 14 (App Router), TypeScript, Tailwind CSS, shadcn/ui
 - **Backend**: Next.js API Routes
-- **Database**: PostgreSQL with Prisma ORM
-- **Authentication**: NextAuth.js
+- **Database**: Supabase (PostgreSQL) with Prisma ORM
+- **Authentication**: NextAuth.js with Prisma adapter
 - **AI**: DeepSeek API (OpenAI-compatible)
-- **File Storage**: AWS S3 or Vercel Blob
+- **File Storage**: Supabase Storage or AWS S3
 
 ## Getting Started
 
 ### Prerequisites
 
 - Node.js 18+
-- PostgreSQL database
-- DeepSeek API key (provided)
+- Supabase account (project already configured)
+- DeepSeek API key (already provided)
 
 ### Installation
 
@@ -40,7 +40,7 @@ npm install
 cp .env.example .env
 ```
 
-Edit `.env` and add your database URL and other credentials.
+Edit `.env` and add your Supabase database password. See `SUPABASE_SETUP.md` for detailed instructions.
 
 3. Set up the database:
 ```bash
@@ -74,8 +74,17 @@ Open [http://localhost:3000](http://localhost:3000) to see the app.
     └── schema.prisma    # Database schema
 ```
 
-## API Key
+## Configuration
 
+### Supabase
+Your Supabase project is pre-configured:
+- **Project ID**: `owonfwuyrqwywgsjxrcl`
+- **URL**: `https://owonfwuyrqwywgsjxrcl.supabase.co`
+- **Anon Key**: Already in `.env.example`
+
+See `SUPABASE_SETUP.md` for complete setup instructions.
+
+### DeepSeek AI
 The DeepSeek API key is pre-configured in `.env.example`:
 ```
 OPENAI_API_KEY="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"
