@@ -3,10 +3,36 @@ import { Button } from "@/components/ui/button"
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-black flex flex-col items-center justify-center p-8 relative overflow-hidden">
+    <main className="min-h-screen bg-black relative overflow-hidden">
+      {/* Navigation */}
+      <nav className="border-b border-white/10 bg-black/50 backdrop-blur-xl sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="text-xl sm:text-2xl font-bold text-white tracking-tight hover:scale-105 transition-transform">
+              SkillSync
+            </Link>
+            <div className="flex items-center gap-3 sm:gap-4">
+              <Link href="/auth/login">
+                <Button variant="ghost" className="text-sm sm:text-base">
+                  Sign In
+                </Button>
+              </Link>
+              <Link href="/auth/register">
+                <Button className="text-sm sm:text-base">
+                  Get Started
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </nav>
+
       {/* Gradient orbs for visual interest */}
       <div className="absolute top-20 left-20 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
       <div className="absolute bottom-20 right-20 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+      
+      {/* Hero Section */}
+      <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] p-8">
       
       <div className="max-w-5xl mx-auto text-center space-y-12 relative z-10">
         <div className="space-y-6">
@@ -70,6 +96,7 @@ export default function Home() {
             <p className="text-white/60 text-sm">Get matched with perfect career opportunities</p>
           </div>
         </div>
+      </div>
       </div>
     </main>
   )
