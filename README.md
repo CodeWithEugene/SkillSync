@@ -74,23 +74,6 @@ Open [http://localhost:3000](http://localhost:3000) to see the app.
     └── schema.prisma    # Database schema
 ```
 
-## Configuration
-
-### Supabase
-Your Supabase project is pre-configured:
-- **Project ID**: `owonfwuyrqwywgsjxrcl`
-- **URL**: `https://owonfwuyrqwywgsjxrcl.supabase.co`
-- **Anon Key**: Already in `.env.example`
-
-See `SUPABASE_SETUP.md` for complete setup instructions.
-
-### DeepSeek AI
-The DeepSeek API key is pre-configured in `.env.example`:
-```
-OPENAI_API_KEY="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"
-OPENAI_BASE_URL="https://api.deepseek.com"
-```
-
 ## Next Steps
 
 1. Implement document upload functionality
