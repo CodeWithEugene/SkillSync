@@ -5,36 +5,103 @@ const summary = {
   name: 'Eugene Mutembei',
   headline: 'Frontend Developer & UI/UX Designer',
   location: 'Nairobi, Kenya',
-  blurb: 'Shipping performant React/Next.js experiences with clean UI systems and API-first integrations.',
+  blurb: 'Results-driven FE engineer with React, Next.js, TypeScript, GraphQL, and AWS Amplify. Turns complex requirements into fast, production-ready experiences with clean architecture and API-first design.',
+  contact: {
+    phone: '+254 746 152 008',
+    email: 'eugenegabriel.ke@gmail.com',
+    linkedin: 'LinkedIn',
+    github: 'GitHub',
+    portfolio: 'Portfolio',
+  },
 }
 
-const featuredSkills = ['React', 'Next.js', 'TypeScript', 'GraphQL', 'Tailwind', 'AWS Amplify', 'Figma', 'Accessibility']
+const featuredSkills = [
+  'React', 'Next.js', 'TypeScript', 'GraphQL', 'Tailwind CSS',
+  'AWS Amplify', 'Figma', 'Accessibility', 'CI/CD', 'Agile',
+]
 
 const projects = [
   {
     title: 'Adamur Platform UI',
-    impact: 'Improved interactivity by 35% through cleaner UX and faster flows',
-    details: 'Built scalable Next.js + TypeScript frontends with AWS Amplify auth and deployments.',
+    impact: 'Interactivity +35% via refined UX and faster flows',
+    details: 'Built scalable Next.js + TypeScript frontends with AWS Amplify auth/deployments; delivered production-ready UI/UX.',
     tags: ['Next.js', 'TypeScript', 'AWS Amplify', 'UI/UX'],
   },
   {
     title: 'CyberUhuru Web Apps',
-    impact: 'Reduced load times by 30% and lifted Lighthouse scores across responsive apps',
-    details: 'Shipped React + TypeScript apps consuming GraphQL APIs; ensured type-safe contracts and reusable components.',
+    impact: 'Load time -30% and Lighthouse uplift across responsive apps',
+    details: 'Shipped React + TypeScript apps on GraphQL APIs; ensured type-safe contracts, reusable components, and perf tuning.',
     tags: ['React', 'TypeScript', 'GraphQL', 'Performance'],
   },
   {
     title: 'Loan Guarantee System',
-    impact: 'Delivered secure loan workflows with reusable components and guarded routes',
-    details: 'Implemented authentication, GraphQL integrations, and perf wins via code-splitting and memoization.',
+    impact: 'Secure loan workflows with reusable UI and guarded routes',
+    details: 'Implemented auth, GraphQL integrations, and perf wins via code-splitting, lazy loading, and memoization.',
     tags: ['React', 'GraphQL', 'Auth', 'Perf'],
   },
 ]
 
+const experiences = [
+  {
+    role: 'UI/UX Designer, Frontend Developer',
+    company: 'Adamur',
+    date: 'Jul 2025 – Sep 2025',
+    bullets: [
+      'Created user-focused interfaces improving interactivity by 35%.',
+      'Built scalable Next.js + TypeScript apps with AWS Amplify for deploy + auth.',
+      'Contributed end-to-end from design to production rollout.',
+    ],
+  },
+  {
+    role: 'Frontend Developer, UI/UX Designer',
+    company: 'CyberUhuru',
+    date: 'Jan 2025 – Jun 2025',
+    bullets: [
+      'Developed responsive React + TypeScript apps integrated with GraphQL APIs.',
+      'Optimized performance: -30% load time, improved Lighthouse scores.',
+      'Collaborated on type-safe API contracts and reusable, accessible components.',
+    ],
+  },
+  {
+    role: 'Frontend Developer',
+    company: 'Loan Guarantee System Project',
+    date: 'Mar 2025 – Jul 2025',
+    bullets: [
+      'Built loan management flows with React, TypeScript, GraphQL, AWS Amplify.',
+      'Implemented secure auth, reusable UI, and API integrations.',
+      'Enhanced performance via code-splitting, lazy loading, memoization.',
+    ],
+  },
+  {
+    role: 'Founder & Lead Frontend Developer',
+    company: 'Technetium Kenya',
+    date: 'Jan 2024 – Present',
+    bullets: [
+      'Led delivery of high-performance, user-centric applications; +60% client satisfaction.',
+      'Drove digital growth strategies improving retention by 45%.',
+    ],
+  },
+  {
+    role: 'Frontend Dev & UI/UX Design Intern',
+    company: 'OneHope International',
+    date: 'Mar 2023 – Sep 2023',
+    bullets: [
+      'Built React Native apps; +50% engagement.',
+      'Delivered UX improvements increasing usability by 60%.',
+    ],
+  },
+]
+
+const education = {
+  school: 'Jomo Kenyatta University of Agriculture and Technology (JKUAT)',
+  degree: "B.Sc. Mathematics and Computer Science",
+  date: 'Sep 2022 – Present',
+}
+
 const achievements = [
-  'Front-End Web Developer Bootcamp (HTML, CSS, JS, React, Angular, TS)',
-  'Figma UI/UX Complete Bootcamp: 5 job-ready projects',
-  'Git/GitLab/GitHub Fundamentals; CI/CD & Agile practitioner',
+  'Front-End Web Developer Bootcamp: HTML, CSS, JS, React, Angular, TypeScript',
+  'Figma UI/UX Complete Bootcamp (5 job-ready projects)',
+  'Git/GitLab/GitHub Fundamentals; CI/CD & Agile',
   'Prompt Engineering and AI Agents with ChatGPT',
   'Shopify Store Creation Course',
 ]
@@ -64,6 +131,13 @@ export default function PortfolioPage() {
             <p className="text-white text-lg font-semibold">{summary.name} — {summary.headline}</p>
             <p className="text-white/70 text-sm">{summary.location}</p>
             <p className="text-white/70">{summary.blurb}</p>
+            <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-white/70">
+              <span>📞 {summary.contact.phone}</span>
+              <span>✉️ {summary.contact.email}</span>
+              <span>🔗 {summary.contact.linkedin}</span>
+              <span>💻 {summary.contact.github}</span>
+              <span>🌐 {summary.contact.portfolio}</span>
+            </div>
           </CardContent>
         </Card>
 
@@ -116,6 +190,39 @@ export default function PortfolioPage() {
                 <p className="text-white/80 text-sm">{item}</p>
               </div>
             ))}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-white text-xl sm:text-2xl">Experience</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {experiences.map((exp) => (
+              <div key={`${exp.company}-${exp.role}`} className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-2">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                  <p className="text-white font-semibold">{exp.role}</p>
+                  <span className="text-xs text-white/60">{exp.date}</span>
+                </div>
+                <p className="text-white/70 text-sm">{exp.company}</p>
+                <ul className="list-disc list-inside text-white/70 text-sm space-y-1">
+                  {exp.bullets.map((b) => (
+                    <li key={b}>{b}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-white text-xl sm:text-2xl">Education</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-1">
+            <p className="text-white font-semibold">{education.school}</p>
+            <p className="text-white/80 text-sm">{education.degree}</p>
+            <p className="text-white/60 text-xs">{education.date}</p>
           </CardContent>
         </Card>
       </div>

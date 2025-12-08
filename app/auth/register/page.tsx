@@ -15,6 +15,7 @@ export default function RegisterPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    careerPath: "",
     password: "",
     confirmPassword: "",
   })
@@ -45,6 +46,7 @@ export default function RegisterPage() {
         options: {
           data: {
             name: formData.name,
+            careerPath: formData.careerPath,
           },
           emailRedirectTo: `${window.location.origin}/dashboard`,
         },
@@ -95,6 +97,12 @@ export default function RegisterPage() {
               placeholder="Email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              required
+            />
+            <Input
+              placeholder="Desired career path (e.g., Frontend Engineer)"
+              value={formData.careerPath}
+              onChange={(e) => setFormData({ ...formData, careerPath: e.target.value })}
               required
             />
             <PasswordInput
