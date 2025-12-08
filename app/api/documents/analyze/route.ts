@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server"
 import { createServerSupabaseClient } from "@/lib/supabase-server"
-import { openai } from "@/lib/openai"
 import { updateDocumentStatus, createExtractedSkill } from "@/lib/db"
+import { GoogleGenerativeAI } from "@google/generative-ai"
 
 export async function POST(req: Request) {
   try {
     const { documentId } = await req.json()
+    console.log('[ANALYZE] Starting analysis for document:', documentId)
 
     if (!documentId) {
       return NextResponse.json({ error: "Document ID required" }, { status: 400 })
@@ -14,6 +15,7 @@ export async function POST(req: Request) {
     const supabase = await createServerSupabaseClient()
 
     // Get document
+    console.log('[ANALYZE] Fetching document from database...')
     const { data: document, error: docError } = await supabase
       .from('documents')
       .select('*')
@@ -21,17 +23,22 @@ export async function POST(req: Request) {
       .single()
 
     if (docError || !document) {
+      console.error('[ANALYZE] Document not found:', docError)
       return NextResponse.json({ error: "Document not found" }, { status: 404 })
     }
+    console.log('[ANALYZE] Document found:', document.filename)
 
     // Download file content
+    console.log('[ANALYZE] Downloading file from:', document.fileUrl)
     const fileUrl = document.fileUrl
     const response = await fetch(fileUrl)
     
     if (!response.ok) {
+      console.error('[ANALYZE] Failed to download file:', response.status, response.statusText)
       await updateDocumentStatus(documentId, 'FAILED')
       return NextResponse.json({ error: "Failed to download file" }, { status: 500 })
     }
+    console.log('[ANALYZE] File downloaded successfully')
 
     // Extract text from file (for now, we'll handle text files and PDFs)
     let fileContent = ''
@@ -80,23 +87,20 @@ Document content:
 ${fileContent.substring(0, 15000)}` // Limit to avoid token limits
 
     try {
-      const completion = await openai.chat.completions.create({
-        model: "deepseek-chat",
-        messages: [
-          {
-            role: "system",
-            content: "You are an expert at analyzing academic coursework and extracting skills. Always return valid JSON arrays."
-          },
-          {
-            role: "user",
-            content: prompt
-          }
-        ],
-        temperature: 0.3,
-        max_tokens: 2000,
-      })
+      // Initialize Gemini AI
+      console.log('[ANALYZE] Initializing Gemini AI...')
+      const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
+      const model = genAI.getGenerativeModel({ model: "gemini-pro" })
 
-      const content = completion.choices[0]?.message?.content || '[]'
+      const fullPrompt = `You are an expert at analyzing academic coursework and extracting skills. Always return valid JSON arrays.
+
+${prompt}`
+
+      console.log('[ANALYZE] Sending request to Gemini API...')
+      const result = await model.generateContent(fullPrompt)
+      const response = await result.response
+      const content = response.text() || '[]'
+      console.log('[ANALYZE] Received response from Gemini API')
       
       // Parse JSON response
       let skills: any[] = []
@@ -118,6 +122,7 @@ ${fileContent.substring(0, 15000)}` // Limit to avoid token limits
       }
 
       // Save extracted skills
+      console.log('[ANALYZE] Saving', skills.length, 'extracted skills...')
       const savedSkills = []
       for (const skill of skills) {
         if (skill.skillName && skill.category && skill.confidenceScore !== undefined) {
@@ -132,14 +137,16 @@ ${fileContent.substring(0, 15000)}` // Limit to avoid token limits
             })
             savedSkills.push(saved)
           } catch (err) {
-            console.error("Failed to save skill:", err)
+            console.error("[ANALYZE] Failed to save skill:", err)
           }
         }
       }
 
       // Update document status
+      console.log('[ANALYZE] Updating document status to COMPLETED')
       await updateDocumentStatus(documentId, 'COMPLETED')
 
+      console.log('[ANALYZE] Analysis complete! Extracted', savedSkills.length, 'skills')
       return NextResponse.json({
         success: true,
         skillsExtracted: savedSkills.length,

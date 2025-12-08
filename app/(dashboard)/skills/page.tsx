@@ -1,27 +1,72 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
+const skills = [
+  { name: 'React', level: 'Advanced', confidence: '94%', tags: ['Hooks', 'Performance'], lastValidated: '2 days ago' },
+  { name: 'Next.js', level: 'Advanced', confidence: '91%', tags: ['SSR/SSG', 'Routing'], lastValidated: '3 days ago' },
+  { name: 'TypeScript', level: 'Advanced', confidence: '90%', tags: ['Types', 'DX'], lastValidated: '3 days ago' },
+  { name: 'GraphQL', level: 'Advanced', confidence: '88%', tags: ['Schema Design', 'Type-safe APIs'], lastValidated: '4 days ago' },
+  { name: 'Tailwind CSS', level: 'Advanced', confidence: '87%', tags: ['Design Systems', 'Responsive'], lastValidated: '4 days ago' },
+  { name: 'AWS Amplify', level: 'Intermediate', confidence: '82%', tags: ['Auth', 'Deployments'], lastValidated: '5 days ago' },
+  { name: 'UI/UX Design', level: 'Intermediate', confidence: '85%', tags: ['Figma', 'Accessibility'], lastValidated: '5 days ago' },
+]
+
+const nextSteps = [
+  { title: 'Ship design tokens', action: 'Extract reusable Tailwind presets for UI kit', eta: '2 days' },
+  { title: 'GraphQL hardening', action: 'Add input validation + strict types for mutations', eta: 'This week' },
+  { title: 'Perf audit', action: 'Measure and tune LCP/TTI on Next.js routes', eta: 'This week' },
+]
+
 export default function SkillsPage() {
   return (
     <div className="min-h-screen bg-black p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8 lg:space-y-10">
         <div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">My Skills</h1>
-          <p className="text-white/60 text-base sm:text-lg mt-2">View and manage your extracted skills</p>
+          <p className="text-white/60 text-base sm:text-lg mt-2">View and manage your extracted skills (sample data)</p>
         </div>
 
         <Card>
           <CardHeader>
             <CardTitle className="text-white text-xl sm:text-2xl">Extracted Skills</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div className="text-center py-12 sm:py-16 space-y-4">
-              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto">
-                <svg className="w-8 h-8 sm:w-10 sm:h-10 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
+          <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {skills.map((skill) => (
+              <div key={skill.name} className="p-4 rounded-xl bg-white/5 border border-white/10 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-white font-semibold">{skill.name}</p>
+                    <p className="text-white/60 text-sm">Last validated {skill.lastValidated}</p>
+                  </div>
+                  <span className="text-xs px-3 py-1 rounded-full bg-white/10 text-white/80">
+                    {skill.level} • {skill.confidence}
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {skill.tags.map((tag) => (
+                    <span key={tag} className="text-xs px-2.5 py-1 rounded-full bg-white/10 text-white/70">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </div>
-              <p className="text-white/60 text-sm sm:text-base px-4">No skills extracted yet. Upload documents to discover your skills!</p>
-            </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-white text-xl sm:text-2xl">Next Steps</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {nextSteps.map((step) => (
+              <div key={step.title} className="flex items-center justify-between p-4 rounded-lg bg-white/5 border border-white/10">
+                <div>
+                  <p className="text-white font-medium">{step.title}</p>
+                  <p className="text-white/60 text-sm">{step.action}</p>
+                </div>
+                <span className="text-xs px-2 py-1 rounded-full bg-white/10 text-white/70">ETA: {step.eta}</span>
+              </div>
+            ))}
           </CardContent>
         </Card>
       </div>

@@ -6,6 +6,7 @@ import Link from "next/link"
 import { supabase } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { PasswordInput } from "@/components/ui/password-input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Popup } from "@/components/ui/popup"
 
@@ -50,28 +51,17 @@ export default function RegisterPage() {
       })
 
       if (authError) {
-        console.error("Registration error details:", {
-          message: authError.message,
-          status: authError.status,
-          name: authError.name,
-          cause: authError.cause,
-          full: authError
-        })
         setError(`Registration Error: ${authError.message}`)
         setLoading(false)
         return
       }
 
       if (data.user) {
-        // Check if email confirmation is required
         if (data.session) {
-          // User is automatically logged in
           router.push("/dashboard")
           router.refresh()
         } else {
-          // Email confirmation required
           setError("")
-          // Show success popup
           setShowSuccessPopup(true)
         }
       }
@@ -84,7 +74,6 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background gradient orbs */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
       
@@ -108,15 +97,13 @@ export default function RegisterPage() {
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               required
             />
-            <Input
-              type="password"
+            <PasswordInput
               placeholder="Password"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               required
             />
-            <Input
-              type="password"
+            <PasswordInput
               placeholder="Confirm Password"
               value={formData.confirmPassword}
               onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
@@ -132,8 +119,6 @@ export default function RegisterPage() {
             </Button>
           </form>
 
-
-
           <p className="text-center text-sm text-white/70 pt-4">
             Already have an account?{" "}
             <Link href="/auth/login" className="text-white hover:underline font-semibold transition-all">
@@ -143,7 +128,6 @@ export default function RegisterPage() {
         </CardContent>
       </Card>
 
-      {/* Success Popup */}
       <Popup
         isOpen={showSuccessPopup}
         onClose={() => {

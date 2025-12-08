@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { DocumentUpload } from "@/components/documents/document-upload"
+import { ConfirmDialog } from "@/components/ui/confirm-dialog"
 
 interface Document {
   id: string
@@ -13,20 +14,51 @@ interface Document {
   uploadDate: string
 }
 
+const sampleDocuments: Document[] = [
+  {
+    id: 'sample-1',
+    filename: 'JKUAT_Math_CS_Syllabus.pdf',
+    fileUrl: '#',
+    status: 'COMPLETED',
+    uploadDate: new Date().toISOString(),
+  },
+  {
+    id: 'sample-2',
+    filename: 'Adamur_UI_Prototype.fig',
+    fileUrl: '#',
+    status: 'PROCESSING',
+    uploadDate: new Date().toISOString(),
+  },
+  {
+    id: 'sample-3',
+    filename: 'Loan_Guarantee_System_Spec.pdf',
+    fileUrl: '#',
+    status: 'FAILED',
+    uploadDate: new Date().toISOString(),
+  },
+]
+
 export default function DocumentsPage() {
-  const [documents, setDocuments] = useState<Document[]>([])
-  const [loading, setLoading] = useState(true)
+  const [documents, setDocuments] = useState<Document[]>(sampleDocuments)
+  const [loading, setLoading] = useState(false)
   const [showUpload, setShowUpload] = useState(false)
+  const [deleteDialog, setDeleteDialog] = useState<{ isOpen: boolean; documentId: string; filename: string }>({
+    isOpen: false,
+    documentId: '',
+    filename: '',
+  })
 
   const fetchDocuments = async () => {
+    setLoading(true)
     try {
       const response = await fetch('/api/documents')
       if (response.ok) {
         const data = await response.json()
-        setDocuments(data.documents || [])
+        setDocuments((data.documents && data.documents.length > 0) ? data.documents : sampleDocuments)
       }
     } catch (error) {
       console.error('Failed to fetch documents:', error)
+      setDocuments(sampleDocuments)
     } finally {
       setLoading(false)
     }
@@ -42,6 +74,29 @@ export default function DocumentsPage() {
   const handleUploadComplete = (documentId: string) => {
     setShowUpload(false)
     fetchDocuments()
+  }
+
+  const handleDeleteClick = (documentId: string, filename: string) => {
+    setDeleteDialog({ isOpen: true, documentId, filename })
+  }
+
+  const handleDeleteConfirm = async () => {
+    try {
+      const response = await fetch('/api/documents/delete', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ documentId: deleteDialog.documentId }),
+      })
+
+      if (response.ok) {
+        fetchDocuments()
+      } else {
+        const data = await response.json()
+        console.error('Failed to delete:', data.error)
+      }
+    } catch (error) {
+      console.error('Delete error:', error)
+    }
   }
 
   const getStatusColor = (status: string) => {
@@ -120,7 +175,7 @@ export default function DocumentsPage() {
             <CardTitle className="text-white text-xl sm:text-2xl">Your Documents</CardTitle>
           </CardHeader>
           <CardContent>
-            {loading ? (
+            {loading && documents.length === 0 ? (
               <div className="text-center py-12">
                 <div className="w-16 h-16 border-4 border-white/20 border-t-white rounded-full animate-spin mx-auto"></div>
                 <p className="text-white/60 mt-4">Loading documents...</p>
@@ -148,6 +203,7 @@ export default function DocumentsPage() {
               </div>
             ) : (
               <div className="space-y-4">
+                <p className="text-white/60 text-sm">{`Showing ${documents.length} documents (demo data). Upload to replace.`}</p>
                 {documents.map((doc) => (
                   <div
                     key={doc.id}
@@ -180,12 +236,30 @@ export default function DocumentsPage() {
                         <span className="text-sm font-medium capitalize">{doc.status.toLowerCase()}</span>
                       </div>
                     </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleDeleteClick(doc.id, doc.filename)}
+                      className="ml-4 text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </Button>
                   </div>
                 ))}
               </div>
             )}
           </CardContent>
         </Card>
+
+        <ConfirmDialog
+          isOpen={deleteDialog.isOpen}
+          onClose={() => setDeleteDialog({ isOpen: false, documentId: '', filename: '' })}
+          onConfirm={handleDeleteConfirm}
+          title="Delete Document"
+          message={`Are you sure you want to delete "${deleteDialog.filename}"? This action cannot be undone.`}
+        />
       </div>
     </div>
   )
