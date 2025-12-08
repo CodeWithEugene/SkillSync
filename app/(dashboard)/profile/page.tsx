@@ -8,6 +8,12 @@ const sampleProfile = {
   bio: 'Frontend Developer & UI/UX Designer shipping production-ready React/Next apps.',
   role: 'Frontend Developer · UI/UX Designer',
   location: 'Nairobi, Kenya',
+  careerPath: 'Frontend Engineer',
+  links: {
+    linkedin: 'https://linkedin.com/in/demo-eugene',
+    github: 'https://github.com/demo-eugene',
+    portfolio: 'https://portfolio.demo/eugene',
+  },
 }
 
 const completionItems = [
@@ -21,9 +27,10 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-black p-4 sm:p-6 lg:p-8">
       <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 lg:space-y-10">
-        <div>
+        <div className="space-y-2">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">Profile Settings</h1>
-          <p className="text-white/60 text-base sm:text-lg mt-2">Manage your account information (sample values shown)</p>
+          <p className="text-white/60 text-base sm:text-lg mt-2">Manage your account information</p>
+          <p className="text-white/70 text-sm">Career path: <span className="text-white font-semibold">{sampleProfile.careerPath}</span></p>
         </div>
 
         <Card>
@@ -44,12 +51,22 @@ export default function ProfilePage() {
               <Input placeholder="Role or focus" defaultValue={sampleProfile.role} />
             </div>
             <div className="space-y-2">
+              <label className="text-sm text-white/70 font-medium">Desired career path</label>
+              <Input placeholder="e.g., Frontend Engineer" defaultValue={sampleProfile.careerPath} />
+            </div>
+            <div className="space-y-2">
               <label className="text-sm text-white/70 font-medium">Location</label>
               <Input placeholder="City, Country" defaultValue={sampleProfile.location} />
             </div>
             <div className="space-y-2">
               <label className="text-sm text-white/70 font-medium">Bio</label>
               <Input placeholder="Tell us about yourself" defaultValue={sampleProfile.bio} />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm text-white/70 font-medium">Links</label>
+              <Input placeholder="LinkedIn" defaultValue={sampleProfile.links.linkedin} />
+              <Input placeholder="GitHub" defaultValue={sampleProfile.links.github} />
+              <Input placeholder="Portfolio" defaultValue={sampleProfile.links.portfolio} />
             </div>
             <Button size="lg" className="mt-4 w-full sm:w-auto">Save Changes</Button>
           </CardContent>

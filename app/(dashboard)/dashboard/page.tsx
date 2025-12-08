@@ -24,6 +24,7 @@ const learningFocus = [
 
 export default async function DashboardPage() {
   const user = await getCurrentUser()
+  const careerPath = user?.user_metadata?.careerPath || 'Frontend Engineer'
 
   if (!user) {
     redirect("/auth/login")
@@ -32,9 +33,21 @@ export default async function DashboardPage() {
   return (
     <div className="min-h-screen bg-black p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8 lg:space-y-10">
-        <div className="space-y-2">
+        <div className="space-y-3">
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-white/60">Last updated: just now</span>
+          </div>
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">Welcome back, {user.name || user.email}!</h1>
-          <p className="text-white/60 text-base sm:text-lg">Here's your SkillSync overview with sample data</p>
+          <p className="text-white/70 text-base sm:text-lg">Career path: <span className="text-white font-semibold">{careerPath}</span></p>
+          <p className="text-white/60 text-sm sm:text-base">Here’s your SkillSync overview</p>
+          <div className="flex flex-wrap gap-3 pt-2">
+            <Link href="/documents">
+              <Button size="sm" className="text-sm">Upload document</Button>
+            </Link>
+            <Link href="/careers">
+              <Button size="sm" variant="secondary" className="text-sm">Explore careers</Button>
+            </Link>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

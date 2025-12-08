@@ -71,11 +71,19 @@ const sampleDocuments: Document[] = [
     status: 'COMPLETED',
     uploadDate: new Date('2023-09-12').toISOString(),
   },
+  {
+    id: 'sample-9',
+    filename: 'Adamur_QA_Report.pdf',
+    fileUrl: '#',
+    status: 'FAILED',
+    uploadDate: new Date('2025-10-15').toISOString(),
+  },
 ]
 
 export default function DocumentsPage() {
   const [documents, setDocuments] = useState<Document[]>(sampleDocuments)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [showEmpty, setShowEmpty] = useState(false)
   const [showUpload, setShowUpload] = useState(false)
   const [deleteDialog, setDeleteDialog] = useState<{ isOpen: boolean; documentId: string; filename: string }>({
     isOpen: false,
@@ -100,10 +108,16 @@ export default function DocumentsPage() {
   }
 
   useEffect(() => {
+    // simulate initial shimmer before demo data
+    const timer = setTimeout(() => {
+      setLoading(false)
+    }, 500)
     fetchDocuments()
-    // Poll for status updates
     const interval = setInterval(fetchDocuments, 5000)
-    return () => clearInterval(interval)
+    return () => {
+      clearTimeout(timer)
+      clearInterval(interval)
+    }
   }, [])
 
   const handleUploadComplete = (documentId: string) => {
@@ -207,15 +221,27 @@ export default function DocumentsPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-white text-xl sm:text-2xl">Your Documents</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-white text-xl sm:text-2xl">Your Documents</CardTitle>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="text-xs"
+                  onClick={() => setShowEmpty(!showEmpty)}
+                >
+                  {showEmpty ? 'Show documents' : 'Show empty state'}
+                </Button>
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
-            {loading && documents.length === 0 ? (
+            {loading ? (
               <div className="text-center py-12">
                 <div className="w-16 h-16 border-4 border-white/20 border-t-white rounded-full animate-spin mx-auto"></div>
                 <p className="text-white/60 mt-4">Loading documents...</p>
               </div>
-            ) : documents.length === 0 ? (
+            ) : showEmpty || documents.length === 0 ? (
               <div className="text-center py-12 sm:py-16 space-y-4">
                 <div className="w-16 h-16 sm:w-20 sm:h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto">
                   <svg
@@ -238,7 +264,7 @@ export default function DocumentsPage() {
               </div>
             ) : (
               <div className="space-y-4">
-                <p className="text-white/60 text-sm">{`Showing ${documents.length} documents (demo data). Upload to replace.`}</p>
+                <p className="text-white/60 text-sm">{`Showing ${documents.length} documents. Upload to replace.`}</p>
                 {documents.map((doc) => (
                   <div
                     key={doc.id}

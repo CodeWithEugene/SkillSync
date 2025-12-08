@@ -9,9 +9,9 @@ const summary = {
   contact: {
     phone: '+254 746 152 008',
     email: 'eugenegabriel.ke@gmail.com',
-    linkedin: 'LinkedIn',
-    github: 'GitHub',
-    portfolio: 'Portfolio',
+    linkedin: 'https://linkedin.com/in/demo-eugene',
+    github: 'https://github.com/demo-eugene',
+    portfolio: 'https://portfolio.demo/eugene',
   },
 }
 
